@@ -1,0 +1,43 @@
+diff --git a/arch-template.json b/arch-template.json
+index c3d9b00..e9c7e87 100644
+--- a/arch-template.json
++++ b/arch-template.json
+@@ -16,8 +16,8 @@
+             "boot_wait": "5s",
+             "boot_command": [
+                 "<enter><wait10><wait10>",
+-                "/usr/bin/curl -O http://{{.HTTPIP}}:{{.HTTPPort}}/install-virtualbox.sh<enter><wait5>",
+-                "/usr/bin/curl -O http://{{.HTTPIP}}:{{.HTTPPort}}/poweroff.timer<enter><wait5>",
++                "/usr/bin/curl -O http://{{.HTTPIP}}:{{.HTTPPort}}/packer-arch/install-virtualbox.sh<enter><wait5>",
++                "/usr/bin/curl -O http://{{.HTTPIP}}:{{.HTTPPort}}/packer-arch/poweroff.timer<enter><wait5>",
+                 "/usr/bin/bash ./install-virtualbox.sh<enter>"
+             ],
+             "disk_size": 20480,
+diff --git a/install-virtualbox.sh b/install-virtualbox.sh
+index af5f16e..864bdd6 100644
+--- a/install-virtualbox.sh
++++ b/install-virtualbox.sh
+@@ -35,6 +35,7 @@ echo '==> bootstrapping the base installation'
+ /usr/bin/arch-chroot ${TARGET_DIR} pacman -S --noconfirm gptfdisk openssh syslinux
+ /usr/bin/arch-chroot ${TARGET_DIR} syslinux-install_update -i -a -m
+ /usr/bin/sed -i 's/sda3/sda1/' "${TARGET_DIR}/boot/syslinux/syslinux.cfg"
++/usr/bin/sed -i 's/linux/linux-lts/' "${TARGET_DIR}/boot/syslinux/syslinux.cfg"
+ /usr/bin/sed -i 's/TIMEOUT 50/TIMEOUT 10/' "${TARGET_DIR}/boot/syslinux/syslinux.cfg"
+ 
+ echo '==> generating the filesystem table'
+@@ -59,10 +60,15 @@ cat <<-EOF > "${TARGET_DIR}${CONFIG_SCRIPT}"
+ 
+ 	# VirtualBox Guest Additions
+ 	/usr/bin/pacman -S --noconfirm linux-headers virtualbox-guest-utils virtualbox-guest-dkms
++    /usr/bin/pacman -S --noconfirm linux-lts linux-lts-headers puppet
++	/usr/bin/mkinitcpio -p linux-lts
++
+ 	echo -e 'vboxguest\nvboxsf\nvboxvideo' > /etc/modules-load.d/virtualbox.conf
+ 	guest_version=\$(/usr/bin/pacman -Q virtualbox-guest-dkms | awk '{ print \$2 }' | cut -d'-' -f1)
+ 	kernel_version="\$(/usr/bin/pacman -Q linux | awk '{ print \$2 }')-ARCH"
++	kernel_lts_version="\$(/usr/bin/pacman -Q linux-lts | awk '{ print \$2 }')-ARCH"
+ 	/usr/bin/dkms install "vboxguest/\${guest_version}" -k "\${kernel_version}/x86_64"
++	/usr/bin/dkms install "vboxguest/\${guest_version}" -k "\${kernel_lts_version}/x86_64"
+ 	/usr/bin/systemctl enable dkms.service
+ 	/usr/bin/systemctl enable vboxservice.service
+ 

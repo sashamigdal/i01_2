@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<fix8>
+	<default role="initiator"
+				fix_version="4200"
+				session_log="session_log_file"
+				protocol_log="protocol_log_file"
+				login_retry_interval="5000"
+				reset_sequence_numbers="false"
+				connect_timeout="3"
+				tcp_nodelay="true"
+				tcp_linger="1"
+				tcp_recv_buffer="16777216"
+				tcp_send_buffer="16777216"
+				always_seqnum_assign="false"
+				process_model="threaded"
+				enforce_compids="true"
+				login_retries="0"
+				tabsize="3"
+        persist="file0"
+        permissive_mode="true"
+        />
+
+    <server_group name="BAG_UAT_Group0">
+        <server name="BAGPrimary"
+            ip="162.68.216.58" port="18320" max_retries="10" />
+    </server_group>
+    <server_group name="CBS_UAT_Group0">
+        <server name="CBSPrimary"
+            ip="162.68.216.198" port="10089" max_retries="10" />
+    </server_group>
+    <server_group name="CCG_UAT_Group0">
+        <server name="CCGPrimary"
+            ip="162.68.216.61" port="11020" max_retries="10" />
+    </server_group>
+
+    <!--[[ ssh -fN -L 18320:162.68.216.58:18320 -L 10089:162.68.216.198:10089 -L 11020:162.68.216.61:11020 lemmy ]]-->
+    <server_group name="Tunneled_BAG_UAT_Group0">
+        <server name="BAGPrimary"
+            ip="127.0.0.1" port="18320" max_retries="10" />
+    </server_group>
+    <server_group name="Tunneled_CBS_UAT_Group0">
+        <server name="CBSPrimary"
+            ip="127.0.0.1" port="10089" max_retries="10" />
+    </server_group>
+    <server_group name="Tunneled_CCG_UAT_Group0">
+        <server name="CCGPrimary"
+            ip="127.0.0.1" port="11020" max_retries="10" />
+    </server_group>
+
+	<session name="BAG_UAT"
+				sender_comp_id="PCO_PICO01"
+        target_comp_id="BAG"
+        server_group="Tunneled_BAG_UAT_Group0"
+				heartbeat_interval="30"
+				active="true" />
+
+	<session name="CBS_UAT"
+				sender_comp_id="PCO_PICOCBS01"
+				target_comp_id="CBS"
+        server_group="Tunneled_CBS_UAT_Group0"
+				heartbeat_interval="60"
+				active="true" />
+
+	<session name="CCG_UAT"
+				sender_comp_id="PCQT_SB08"
+				target_comp_id="CCG"
+        server_group="Tunneled_CCG_UAT_Group0"
+				heartbeat_interval="30"
+        active="true" />
+
+	<persist name="file0"
+      type="file" dir="/var/tmp/"
+            use_session_id="true"
+            rotation="10"
+            db="nyseccg_client" />
+
+	<log 		name="session_log_file"
+				type="session"
+        filename="/var/tmp/nyseccg_client_session.log"
+				rotation="10"
+				levels="debug|info|warn|error|fatal"
+            use_session_id="true"
+				flags="sequence|timestamp|sstart|thread|location|level"/>
+
+	<log 		name="protocol_log_with_attributes"
+				type="protocol"
+        filename="/var/tmp/nyseccg_client_protocol.log"
+				rotation="10"
+            use_session_id="true"
+				flags="sequence|append|direction|compress|inbound|outbound"/>
+
+	<log 		name="protocol_log_file"
+				type="protocol"
+				levels="debug|info|warn|error|fatal"
+        filename="/var/tmp/nyseccg_client_protocol.log"
+				rotation="10"
+				flags_old="append|inbound|outbound|direction|sequence"
+            use_session_id="true"
+				flags="append|inbound|outbound"/>
+
+</fix8>

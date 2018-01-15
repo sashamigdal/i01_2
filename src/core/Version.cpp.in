@@ -1,0 +1,11 @@
+#include <i01_core/Version.hpp>
+
+namespace i01 { 
+
+const char g_IDENT[] = "$Id$";
+const char g_COMMIT[41] = "@I01_COMMIT@";
+const char g_VERSION[] = "@I01_VERSION@";
+const char g_BUILD_VERSION[] = "@I01_BUILD_VERSION@";
+const std::uint64_t g_INTEGER_VERSION = (0x@I01_VERSION_MAJOR@ULL << 32) + (0x@I01_VERSION_MINOR@ULL << 16) + (0x@I01_VERSION_PATCH@ULL << 0);
+
+}

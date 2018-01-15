@@ -1,0 +1,8 @@
+add_subdirectory(core)
+add_subdirectory(net)
+add_subdirectory(fix)
+add_subdirectory(md)
+add_subdirectory(oe)
+add_subdirectory(ts)
+add_subdirectory(apps)
+add_subdirectory(strats)

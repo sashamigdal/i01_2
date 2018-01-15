@@ -1,0 +1,20 @@
+cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
+
+project(uncap)
+
+set(TARGET_NAME ${PROJECT_NAME})
+
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}")
+
+add_executable(${TARGET_NAME} uncap.c)
+target_link_libraries(${TARGET_NAME} cap)
+
+set_target_properties(${TARGET_NAME} PROPERTIES VERSION
+    "${I01_VERSION}" SOVERSION 0)
+
+install(TARGETS ${TARGET_NAME}
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib/static
+    PERMISSIONS OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE SETUID
+)

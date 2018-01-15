@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ArcaSymbolMap xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SymbolMap>
+    <Symbol>INTC</Symbol>
+    <CQS_Symbol>INTC</CQS_Symbol>
+    <SymbolIndexNumber>2074</SymbolIndexNumber>
+    <NYSEMarket>P</NYSEMarket>
+    <ListedMarket>Q</ListedMarket>
+    <TickerDesignation>C</TickerDesignation>
+    <UOT>100</UOT>
+    <PriceScaleCode>4</PriceScaleCode>
+    <NYSE_SystemID>2</NYSE_SystemID>
+    <BBG_BSID></BBG_BSID>
+    <BBG_GlobalID></BBG_GlobalID>
+  </SymbolMap>
+</ArcaSymbolMap>

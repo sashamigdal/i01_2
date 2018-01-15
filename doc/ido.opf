@@ -1,0 +1,39 @@
+
+# Ido's OpenOnload latency-optimized profile
+# Mellanox RAW_ETH_QP & CX3 still kick Solarflare's butt though. :(
+
+onload_set EF_TCP_FASTSTART_INIT 0 # needs testing. XXX
+onload_set EF_TCP_FASTSTART_IDLE 0 # needs testing. XXX
+
+#onload_set EF_BUZZ_USEC=900000000 # set by EF_POLL_USEC
+onload_set EF_DELACK_THRESH=0
+#onload_set EF_EVS_PER_POLL=64 # default
+#onload_set EF_FDS_MT_SAFE=1 # default
+#onload_set EF_FORCE_TCP_NODELAY=1 # not default, but not needed
+onload_set EF_INT_DRIVEN=1 # default
+onload_set EF_LOG=conn_drop # not default, but good practice
+#onload_set EF_LOG_VIA_IOCTL=1 # log to syslog, not needed
+onload_set EF_MAX_PACKETS=65536 # 2*default
+onload_set EF_MAX_TX_PACKETS=49152 # 2*default
+onload_set EF_MCAST_JOIN_BINDTODEVICE=1 # needs testing
+#onload_set EF_MCAST_SEND=3 # 7000-series, loopback to this and other stacks
+onload_set EF_MIN_FREE_PACKETS=256
+onload_set EF_NO_FAIL=0 # fail to create unaccelerated sockets on accelerated interfaces
+onload_set EF_NONAGLE_INFLIGHT_MAX=-1
+#onload_set EF_PACKET_BUFFER_MODE=0 # need to test latency effects of setting = 3
+#onload_set EF_PIO_THRESHOLD=1514 # default
+onload_set EF_POLL_USEC=900000000
+#onload_set EF_PREFAULT_PACKETS=1000 # needs testing
+onload_set EF_MAX_RX_PACKETS=49152 # 2*default
+onload_set EF_RXQ_SIZE=4096
+onload_set EF_RX_TIMESTAMPING=1
+#onload_set EF_TCP_CLIENT_LOOPBACK=2 # only if co-hosting strats on same machine
+onload_set EF_TCP_INITIAL_CWND=100000
+onload_set EF_TCP_LOSS_MIN_CWND=16384 # WARNING: may violate TCP RFC
+#onload_set EF_TCP_RST_DELAYED_CONN=1 # DANGEROUS: packet loss resets connection
+#onload_set EF_TCP_SERVER_LOOPBACK=2 # only if co-hosting strats on same machine
+#onload_set EF_TIMESTAMPING_REPORTING=1 # require clock sync for HWTS translation
+onload_set EF_TX_PUSH=1 # default
+#onload_set EF_TX_PUSH_THRESHOLD=512 # default is 100, see EF_SEND_POLL_THRESH
+onload_set EF_TXQ_SIZE=1024 # consider 4096 if poor TX perf
+onload_set EF_TX_TIMESTAMPING=1 # consider 3

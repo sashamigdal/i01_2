@@ -1,0 +1,6 @@
+[Socket]
+ListenStream=/run/i01logger.sock
+
+[Install]
+WantedBy=sockets.target
+
